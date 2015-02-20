@@ -1,0 +1,17 @@
+{
+  "name": "noknok",
+  "private": true,
+  "version": "1.0.0",
+  "description": "location based messaging",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Allen Vicencio",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.11.2",
+    "mongodb": "^1.4.31",
+    "mongoose": "^3.8.23"
+  }
+}

@@ -4,11 +4,7 @@ var AccountHandler = require('./accountHandler'),
 module.exports = function (app, db) {
 
 	var accountHandler = new AccountHandler(db);
-
-	app.get('/', function (req, res, next) {
-		res.send("on home");
-	});
-
+	
 	//Account functions
 	app.post('/account/create', accountHandler.handleCreateUser);
 	app.post('/account/login', accountHandler.handleLogin);

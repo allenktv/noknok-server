@@ -11,7 +11,6 @@ function AccountDAO(db) {
         var newAccount = new Account({username : username, password : password});
         newAccount.save(function (err, account) {
             if (err) 
-                console.dir(err);
                 return callback(err);
             return callback(null, account);
         });

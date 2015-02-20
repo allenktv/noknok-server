@@ -2,7 +2,8 @@ var AccountDAO = require('../dao/accountDAO').AccountDAO,
 	jsonFactory = require('../helpers/jsonFactory').JsonFactory,
 	ServiceConstants = require('../common/constants/serviceConstants'), 
 	AccountBO = require('../bo/accountBO').AccountBO,
-    Errors = require('../common/errors');
+    Errors = require('../common/errors'),
+    ErrorParser = require('../common/errorParser').ErrorParser;
 
 function AccountHandler(db) {
 
@@ -18,7 +19,7 @@ function AccountHandler(db) {
 
 		accounts.createAccount(username, password, function (err, result) {
 			if (err) {
-				return res.json(jsonFactory.error(err));
+				return res.json(jsonFactory.error(ErrorParser(err)));
 			}
 			return res.json(jsonFactory.account(result));
 		});
@@ -30,7 +31,7 @@ function AccountHandler(db) {
 
 		accounts.login(username, password, function (err, user) {
 			if (err) {
-				return res.json(jsonFactory.error(err));
+				return res.json(jsonFactory.error(ErrorParser(err)));
 			}
 			return res.json(jsonFactory.account(user));
 		});

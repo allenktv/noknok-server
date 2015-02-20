@@ -1,8 +1,6 @@
 var express = require('express'),
 	app = express(),
 	bodyParser = require('body-parser'),
-	cookiePaser = require('cookie-parser'),
-	MongoClient = require('mongodb').MongoClient,
 	mongoose = require('mongoose'),
 	routes = require('./routes/routes'),
 	constants = require('./common/constants/serverConstants');

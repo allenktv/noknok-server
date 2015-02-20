@@ -22,7 +22,7 @@ module.exports.JsonFactory =  {
 	error : function(err) {
 		var error = {
 			"error" : {
-				"title" : "Error",
+				"title" : err != null ? err.title : "Error",
 				"message" : err != null ? err.message : "An error has occured",
 				"errorCode" : err != null ? err.errorCode : 500
 			}

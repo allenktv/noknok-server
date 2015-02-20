@@ -2,7 +2,6 @@ var AccountDAO = require('../dao/accountDAO').AccountDAO,
 	jsonFactory = require('../helpers/jsonFactory').JsonFactory,
 	ServiceConstants = require('../common/constants/serviceConstants'), 
 	AccountBO = require('../bo/accountBO').AccountBO,
-    Errors = require('../common/errors'),
     ErrorParser = require('../common/errorParser').ErrorParser;
 
 function AccountHandler(db) {

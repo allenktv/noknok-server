@@ -1,5 +1,4 @@
 var ServiceConstants = require('../common/constants/serviceConstants'),
-    AccountBO = require('../bo/accountBO');
     Account = require('../models/account').Account,
     Errors = require('../common/errors');
 

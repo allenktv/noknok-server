@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>Socket IO test</title>
+	<style>
+		#chat{
+			height:500px;
+		}
+	</style>
+</head>	
+<body>
+	<div id="usernameWrap">
+		<p>Enter username</p>
+		<form id='setUsername'>
+			<input size="35" id="username"></input>
+			<input size="35" id="password"></input>
+			<input type="submit"></input>
+		</form>
+	</div>
+
+	<div id="contentWrap">
+		<div id="chatWrap">
+			<div id="chat"></div>
+			<form id='send-message'>
+				<input size='35' id='message'></input>
+				<input type="submit"></input>
+			</form>
+		</div>
+		<div id="users"></div>
+	</div>	
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	jQuery(function($) {
+		var socket = io.connect('http://192.168.1.174:8080');
+		var $usernameForm = $('#setUsername');
+		var $usernameBox = $('#username');
+		var $passwordBox = $('#password');
+		var $messageForm = $('#send-message');
+		var $messageBox = $('#message');
+		var $chat = $('#chat');
+		var $users = $('#users');
+
+		$usernameForm.submit(function (e) {
+			e.preventDefault();
+			var user = { 'username' : $usernameBox.val(), 
+						'password' : $passwordBox.val(), 
+						'verify' : $passwordBox.val(),
+						}
+			socket.emit('createUser', user, function callback(data) {
+				if (data) {
+					$('#usernameWrap').hide();
+					$('#contentWrap').show();
+				}
+				$usernameBox.val('');
+			});
+		});
+
+		socket.on('usernames', function (data) {
+			var html = '';
+			for (var i = 0; i < data.length; i++) {
+				html += data[i]+ '<br/>';
+			}
+			$users.html(html);
+		});	
+
+		$messageForm.submit(function (e) {
+			e.preventDefault();
+			socket.emit('send message', $messageBox.val());
+			$messageBox.val('');
+		});
+
+		socket.on('new message', function(data) {
+			$chat.append("<b>" + data.username + "</b>" + " : " + data.msg + "<br/>");
+		});
+	});
+</script>
+
+</body>

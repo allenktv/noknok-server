@@ -31,7 +31,8 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	jQuery(function($) {
-		var socket = io.connect('http://192.168.1.174:8080');
+		// var socket = io.connect('http://192.168.1.174:8080');
+		var socket = io.connect();
 		var $usernameForm = $('#setUsername');
 		var $usernameBox = $('#username');
 		var $passwordBox = $('#password');

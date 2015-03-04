@@ -17,6 +17,13 @@
 		</form>
 	</div>
 
+	<div id="roomWrap">
+		<p>Enter room</p>
+		<form id='setRoom'>
+			<input size="35" id="room"></input>
+			<input type="submit"></input>
+		</form>
+	</div>
 	<div id="contentWrap">
 		<div id="chatWrap">
 			<div id="chat"></div>
@@ -36,6 +43,8 @@
 		var $usernameForm = $('#setUsername');
 		var $usernameBox = $('#username');
 		var $passwordBox = $('#password');
+		var $roomForm = $('#setRoom');
+		var $roomBox = $('#room');
 		var $messageForm = $('#send-message');
 		var $messageBox = $('#message');
 		var $chat = $('#chat');
@@ -43,7 +52,7 @@
 
 		$usernameForm.submit(function (e) {
 			e.preventDefault();
-			var user = { 'username' : $usernameBox.val(), 
+			var user = {'username' : $usernameBox.val(), 
 						'password' : $passwordBox.val(), 
 						'verify' : $passwordBox.val(),
 						}
@@ -54,6 +63,12 @@
 				}
 				$usernameBox.val('');
 			});
+		});
+
+		$roomForm.submit(function (e) {
+			e.preventDefault();
+			socket.emit('join room', $roomBox.val());
+			$roomBox.val('');
 		});
 
 		socket.on('usernames', function (data) {

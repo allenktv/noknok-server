@@ -7,6 +7,7 @@ var AccountSchema = mongoose.Schema({
 	password : { type: String, required: true }
 });
 
+//Performs password hashing before saving account
 AccountSchema.pre('save', function (next) {
 	var user = this;
 	// only hash the password if it has been modified (or is new)

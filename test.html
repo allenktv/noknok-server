@@ -53,16 +53,12 @@
 		$usernameForm.submit(function (e) {
 			e.preventDefault();
 			var user = {'username' : $usernameBox.val(), 
-						'password' : $passwordBox.val(), 
-						'verify' : $passwordBox.val(),
+						'password' : $passwordBox.val()
 						}
-			socket.emit('createUser', user, function callback(data) {
-				if (data) {
-					$('#usernameWrap').hide();
-					$('#contentWrap').show();
-				}
-				$usernameBox.val('');
-			});
+			socket.emit('createAccount', user);
+			$('#usernameWrap').hide();
+			$('#contentWrap').show();
+			$usernameBox.val('');
 		});
 
 		$roomForm.submit(function (e) {
@@ -81,11 +77,11 @@
 
 		$messageForm.submit(function (e) {
 			e.preventDefault();
-			socket.emit('send message', $messageBox.val());
+			socket.emit('sendMessage', {msg : $messageBox.val()});
 			$messageBox.val('');
 		});
 
-		socket.on('new message', function(data) {
+		socket.on('newMessage', function(data) {
 			$chat.append("<b>" + data.username + "</b>" + " : " + data.msg + "<br/>");
 		});
 	});

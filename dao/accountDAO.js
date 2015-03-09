@@ -9,20 +9,23 @@ function AccountDAO(db) {
 	this.createAccount = function (username, password, callback) {
         var newAccount = new Account({username : username, password : password});
         newAccount.save(function (err, account) {
-            if (err) 
+            if (err) {
                 return callback(err);
+            }
             return callback(null, account);
         });
-	}
+	};
 
 	this.login = function(username, password, callback) {
         Account.findOne({username : username}, function (err, account) {
-            if (err) 
+            if (err) {
                 return callback(err);
+            }
             if (account) {
                 account.comparePassword(password, function(err, isMatch) {
-                    if (err) 
+                    if (err) {
                         return callback(err);
+                    }
                     if (isMatch) {
                         return callback(null, account);
                     } else {
@@ -30,9 +33,16 @@ function AccountDAO(db) {
                     }
                 });
             }
-            else 
+            else {
                 return callback(Errors.INVALID_LOGIN);
+            }
         });
-    }
+    };
+
+    this.deleteAccount = function(username, callback) {
+        Account.findOneAndRemove({username : username}, function (err) {
+            //TODO
+        });
+    };
 }
 module.exports.AccountDAO = AccountDAO;

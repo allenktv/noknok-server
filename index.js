@@ -4,7 +4,6 @@ var http = require('http'),
 	io = require('socket.io').listen(server),
 	bodyParser = require('body-parser'),
 	mongoose = require('mongoose'),
-	routes = require('./routes/routes'),
 	events = require('./routes/events'),
 	constants = require('./common/constants/serverConstants');
 
@@ -16,7 +15,6 @@ mongoose.connect(constants.MONGO_IP, function (err) {
 	}));
 	app.use(bodyParser.json());
 
-	routes(app, mongoose.connection);
 	events(io, mongoose.connection);
 
 	server.listen(constants.PORT_NUMBER, function() {

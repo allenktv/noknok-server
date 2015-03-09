@@ -7,30 +7,47 @@ module.exports = function (io, db) {
 	var accountHandler = new AccountHandler(db);
 
 	io.on('connection', function (socket) {
-		console.log('new connection detected');
-		socket.on('send message', function (data, callback) {
+		socket.on('sendMessage', function (data, callback) {
 			console.log(socket.user.username + ' : ' + data.msg);
 			var room = socket.room;
 			if (room) {
-				io.sockets.in(room).emit('new message', {msg : data, username : socket.user.username});
+				io.sockets.in(room).emit('newMessage', {msg : data.msg, username : socket.user.username});
 			} else {
 				//error
 			}
-			if (callback) {
-				callback({code: 'success'});
-			}
 		});	
 
-		socket.on('createUser', function (data, callback) {
-			accountHandler.handleCreateUser(data, callback);
-			console.dir(data);
-			//create user here
-			socket.user = data;
-			usernames.push(socket.user.username);
-			// if (callback) {
-			// 	callback(true);
-			// }
-			io.sockets.emit('usernames', usernames);
+		socket.on('createAccount', function (data, callback) {
+			accountHandler.handleCreateAccount(data, function onFinish(err, result) {
+				if (err && callback) {
+					return callback(err);
+				}
+				//temporary room joining
+				socket.room = 'android';
+				socket.join('android');
+				socket.user = data;
+				usernames.push(socket.user.username);
+				io.sockets.emit('usernames', usernames);
+				if (callback) {
+					callback(result);
+				}
+			});
+		});
+
+		socket.on('loginAccount', function (data, callback) {
+			accountHandler.handleLogin(data, function onFinish(err, result) {
+				if (err && callback) return callback(err);
+				//temporary room joining
+				socket.room = 'android';
+				socket.join('android');
+				//create user here
+				socket.user = data;
+				usernames.push(socket.user.username);
+				io.sockets.emit('usernames', usernames);
+				if (callback) {
+					callback(result);
+				}
+			});
 		});
 
 		socket.on('join room', function (room) {
@@ -46,6 +63,8 @@ module.exports = function (io, db) {
 			//remove user
 		});
 
+		//*****TODO******* 
+		//Figure out how to do error handling by binding or intercept
 		socket.on('error', function (data) {
 			console.dir(data);
 		});

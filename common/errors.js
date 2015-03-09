@@ -15,6 +15,11 @@ define("INVALID_LOGIN", {
 	message: 'Invalid username or password',
 	errorCode: '401'
 });
+define("FAILED_DELETE_ACCOUNT", {
+	title: 'Error',
+	message: 'Invalid password',
+	errorCode: '401'
+});
 define("SHORT_USERNAME", {
 	title: 'Error',
 	message: 'Username must contain at least ' + appConstants.MINIMUM_USERNAME_LENGTH + ' characters',
@@ -23,11 +28,6 @@ define("SHORT_USERNAME", {
 define("SHORT_PASSWORD", {
 	title: 'Error',
 	message: 'Password must contain at least ' + appConstants.MINIMUM_PASSWORD_LENGTH + ' characters',
-	errorCode: '401'
-});
-define("MATCH_PASSWORD", {
-	title: 'Error',
-	message: 'Passwords do not match',
 	errorCode: '401'
 });
 define("UNSPECIFIED_ERROR", {

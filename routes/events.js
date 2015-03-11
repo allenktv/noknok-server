@@ -19,9 +19,12 @@ module.exports = function (io, db) {
 
 		socket.on('createAccount', function (data, callback) {
 			accountHandler.handleCreateAccount(data, function onFinish(err, result) {
-				if (err && callback) {
-					return callback(err);
-				}
+				if (err) {
+					if (callback) {
+						return callback(err);
+					}
+					return;
+				} 
 				//temporary room joining
 				socket.room = 'android';
 				socket.join('android');
@@ -36,7 +39,12 @@ module.exports = function (io, db) {
 
 		socket.on('loginAccount', function (data, callback) {
 			accountHandler.handleLogin(data, function onFinish(err, result) {
-				if (err && callback) return callback(err);
+				if (err) {
+					if (callback) {
+						return callback(err);
+					}
+					return;
+				} 
 				//temporary room joining
 				socket.room = 'android';
 				socket.join('android');
@@ -48,6 +56,20 @@ module.exports = function (io, db) {
 					callback(result);
 				}
 			});
+		});
+
+		socket.on('deleteAccount', function (data, callback) {
+			accountHandler.handleDeleteAccount(data, function onFinish(err, result) {
+				if (err) {
+					if (callback) {
+						return callback(err);
+					}
+					return;
+				} 
+				if (callback) {
+					callback(result);
+				}
+			});	
 		});
 
 		socket.on('join room', function (room) {

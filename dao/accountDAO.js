@@ -40,8 +40,14 @@ function AccountDAO(db) {
     };
 
     this.deleteAccount = function(username, callback) {
-        Account.findOneAndRemove({username : username}, function (err) {
-            //TODO
+        Account.findOneAndRemove({username : username}, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            if (result) {
+                return callback(null, true);
+            }
+            return callback(null, false);
         });
     };
 }

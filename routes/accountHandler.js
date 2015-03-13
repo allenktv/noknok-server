@@ -13,8 +13,9 @@ function AccountHandler(db) {
 		var password = data[ServiceConstants.PASSWORD];
 
 		var validateErr = AccountBO.validateCreateAccount(username, password);
-		if (validateErr) 
+		if (validateErr) {
 			return callback(jsonFactory.error(validateErr));
+		}
 		accounts.createAccount(username, password, function (err, result) {
 			if (callback) {
 				if (err) {

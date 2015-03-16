@@ -22,3 +22,4 @@ define('DELETE_ACCOUNT', 'deleteAccount');
 //Messages
 define('SEND_MESSAGE', 'sendMessage');
 define('NEW_MESSAGE', 'newMessage');
+define('TYPING', 'newMessage');

@@ -7,7 +7,7 @@ function AccountDAO(db) {
 	var accounts = db.collection('accounts');
 
 	this.createAccount = function (username, password, callback) {
-        var newAccount = new Account({username : username, password : password});
+        var newAccount = new Account({'username' : username, 'password' : password});
         newAccount.save(function (err, account) {
             if (err) {
                 return callback(err);
@@ -17,7 +17,7 @@ function AccountDAO(db) {
 	};
 
 	this.login = function(username, password, callback) {
-        Account.findOne({username : username}, function (err, account) {
+        Account.findOne({'username' : username}, function (err, account) {
             if (err) {
                 return callback(err);
             }
@@ -39,8 +39,21 @@ function AccountDAO(db) {
         });
     };
 
+    this.getAccount = function(accountId, callback) {
+        Account.findOne({"_id" : accountId}, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            if (result) {
+                return callback(null, result);
+            } else {
+                return callback(Errors.ACCOUNT_NOT_FOUND);
+            }
+        });
+    }
+
     this.deleteAccount = function(username, callback) {
-        Account.findOneAndRemove({username : username}, function (err, result) {
+        Account.findOneAndRemove({'username' : username}, function (err, result) {
             if (err) {
                 return callback(err);
             }

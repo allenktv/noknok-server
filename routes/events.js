@@ -32,7 +32,7 @@ module.exports = function (io, db) {
 				//temporary room joining
 				socket.room = 'android';
 				socket.join('android');
-				socket.user = data;
+				socket.user = result.result;
 				usernames.push(socket.user.username);
 				io.sockets.emit('usernames', usernames);
 				if (callback) {
@@ -53,9 +53,27 @@ module.exports = function (io, db) {
 				socket.room = 'android';
 				socket.join('android');
 				//create user here
-				socket.user = data;
+				socket.user = result.result;
 				usernames.push(socket.user.username);
 				io.sockets.emit('usernames', usernames);
+				if (callback) {
+					callback(result);
+				}
+			});
+		});
+
+		socket.on(ServiceConstants.GET_ACCOUNT, function (data, callback) {
+			accountHandler.handleGetAccount(data, function onFinish(err, result) {
+				if (err) {
+					if (callback) {
+						return callback(err);
+					}
+					return;
+				}
+				socket.room = 'android';
+				socket.join('android');
+
+				socket.user = result.result;
 				if (callback) {
 					callback(result);
 				}

@@ -30,12 +30,12 @@ function AccountHandler(db) {
 		var username = data[ServiceConstants.USERNAME];
 		var password = data[ServiceConstants.PASSWORD];
 
-		accounts.login(username, password, function (err, user) {
+		accounts.login(username, password, function (err, account) {
 			if (callback) {
 				if (err) {
 					return callback(jsonFactory.error(ErrorParser(err)));
 				}
-				return callback(null, jsonFactory.account(user));
+				return callback(null, jsonFactory.account(account));
 			}
 		});
 	};
@@ -49,6 +49,19 @@ function AccountHandler(db) {
 					return callback(jsonFactory.error(ErrorParser(err)));
 				}
 				return callback(null, jsonFactory.boolean(success));
+			}
+		});
+	}
+
+	this.handleGetAccount = function (data, callback) {
+		var accountId = data[ServiceConstants.ACCOUNT_ID];
+
+		accounts.getAccount(accountId, function (err, account) {
+			if (callback) {
+				if (err) {
+					return callback(jsonFactory.error(ErrorParser(err)));
+				}
+				return callback(null, jsonFactory.account(account));
 			}
 		});
 	}

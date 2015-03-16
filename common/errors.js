@@ -10,6 +10,11 @@ define("USERNAME_EXISTS", {
 	message: 'Username already exists',
 	errorCode: '401'
 });
+define("ACCOUNT_NOT_FOUND", {
+	title: 'Error',
+	message: 'Account ID does not match any accounts',
+	errorCode: '401'
+});
 define("INVALID_LOGIN", {
 	title: 'Error',
 	message: 'Invalid username or password',

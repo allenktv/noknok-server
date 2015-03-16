@@ -6,6 +6,7 @@ function define(name, value) {
 }
 
 //Request parameters
+define('ACCOUNT_ID', 'accountId');
 define('USERNAME', 'username');
 define('PASSWORD', 'password');
 define('VERIFY', 'verify');
@@ -15,6 +16,7 @@ define('MESSAGE', 'msg');
 //Account
 define('CREATE_ACCOUNT', 'createAccount');
 define('LOGIN_ACCOUNT', 'loginAccount');
+define('GET_ACCOUNT', 'getAccount');
 define('DELETE_ACCOUNT', 'deleteAccount');
 
 //Messages

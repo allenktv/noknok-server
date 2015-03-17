@@ -2,6 +2,7 @@ var AccountHandler = require('./accountHandler'),
 	ServiceConstants = require('../common/constants/serviceConstants');
 
 var usernames = [];
+var usersTyping = [];
 
 module.exports = function (io, db) {
 
@@ -10,16 +11,33 @@ module.exports = function (io, db) {
 	io.on('connection', function (socket) {
 		console.log('connection detected\n');
 
-		socket.on(ServiceConstants.SEND_MESSAGE, function (data, callback) {
+		socket.on(ServiceConstants.CLIENT_MESSAGE, function (data, callback) {
 			console.log(socket.user.username + ' : ' + data[ServiceConstants.MESSAGE]);
 			var room = socket.room;
 			if (room) {
-				io.sockets.in(room).emit(ServiceConstants.NEW_MESSAGE, 
-					{ msg : data[ServiceConstants.MESSAGE], username : socket.user.username });
+				io.sockets.in(room).emit(ServiceConstants.SERVER_MESSAGE, 
+					{ 'msg' : data[ServiceConstants.MESSAGE], username : socket.user.username });
 			} else {
 				//error
 			}
 		});	
+
+		socket.on(ServiceConstants.CLIENT_TYPING, function (data, callback) {
+			var isTyping = data[ServiceConstants.IS_TYPING];\
+			var index = usersTyping.indexOf(socket.user.username);
+			if (isTyping && index == -1) {
+				usersTyping.push(socket.user.username);
+			} else if (!isTyping && index > -1) {
+				usersTyping.splice(index, 1);
+			}
+			var room = socket.room;
+			if (room) {
+				io.sockets.in(room).emit(ServiceConstants.SERVER_TYPING, 
+					{ 'usernames' : usersTyping });
+			} else {
+				//error
+			}
+		});
 
 		socket.on(ServiceConstants.CREATE_ACCOUNT, function (data, callback) {
 			accountHandler.handleCreateAccount(data, function onFinish(err, result) {

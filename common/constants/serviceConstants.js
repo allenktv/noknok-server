@@ -12,6 +12,7 @@ define('PASSWORD', 'password');
 define('VERIFY', 'verify');
 define('GENDER', 'gender');
 define('MESSAGE', 'msg');
+define('IS_TYPING', 'isTyping');
 
 //Account
 define('CREATE_ACCOUNT', 'createAccount');
@@ -20,6 +21,7 @@ define('GET_ACCOUNT', 'getAccount');
 define('DELETE_ACCOUNT', 'deleteAccount');
 
 //Messages
-define('SEND_MESSAGE', 'sendMessage');
-define('NEW_MESSAGE', 'newMessage');
-define('TYPING', 'newMessage');
+define('CLIENT_MESSAGE', 'clientMessage');
+define('SERVER_MESSAGE', 'serverMessage');
+define('CLIENT_TYPING', 'clientTyping');
+define('SERVER_TYPING', 'serverTyping');

@@ -1,9 +1,6 @@
 var AccountHandler = require('./accountHandler'),
 	ServiceConstants = require('../common/constants/serviceConstants');
 
-var usernames = [];
-var usersTyping = [];
-
 module.exports = function (io, db) {
 
 	var accountHandler = new AccountHandler(db);
@@ -15,7 +12,7 @@ module.exports = function (io, db) {
 			console.log(socket.user.username + ' : ' + data[ServiceConstants.MESSAGE]);
 			var room = socket.room;
 			if (room) {
-				io.sockets.in(room).emit(ServiceConstants.SERVER_MESSAGE, 
+				io.sockets.in(room.name).emit(ServiceConstants.SERVER_MESSAGE, 
 					{ 'msg' : data[ServiceConstants.MESSAGE], username : socket.user.username });
 			} else {
 				//error
@@ -23,17 +20,19 @@ module.exports = function (io, db) {
 		});	
 
 		socket.on(ServiceConstants.CLIENT_TYPING, function (data, callback) {
-			var isTyping = data[ServiceConstants.IS_TYPING];\
-			var index = usersTyping.indexOf(socket.user.username);
-			if (isTyping && index == -1) {
-				usersTyping.push(socket.user.username);
-			} else if (!isTyping && index > -1) {
-				usersTyping.splice(index, 1);
-			}
+			var isTyping = parseInt(data[ServiceConstants.IS_TYPING]);
 			var room = socket.room;
 			if (room) {
-				io.sockets.in(room).emit(ServiceConstants.SERVER_TYPING, 
-					{ 'usernames' : usersTyping });
+				if (!room.hasOwnProperty('usersTyping')) {
+					room.usersTyping = [];
+				}
+				var index = room.usersTyping.indexOf(socket.user.username);
+				if (isTyping && index == -1) {
+					room.usersTyping.push(socket.user.username);
+				} else if (!isTyping && index > -1) {
+					room.usersTyping.splice(index, 1);
+				}
+				io.sockets.in(room.name).emit(ServiceConstants.SERVER_TYPING, { 'usernames' : room.usersTyping });
 			} else {
 				//error
 			}
@@ -48,11 +47,9 @@ module.exports = function (io, db) {
 					return;
 				} 
 				//temporary room joining
-				socket.room = 'android';
+				socket.room = {'name' : 'android'};
 				socket.join('android');
 				socket.user = result.result;
-				usernames.push(socket.user.username);
-				io.sockets.emit('usernames', usernames);
 				if (callback) {
 					callback(result);
 				}
@@ -68,12 +65,10 @@ module.exports = function (io, db) {
 					return;
 				} 
 				//temporary room joining
-				socket.room = 'android';
+				socket.room = {'name' : 'android'};
 				socket.join('android');
 				//create user here
 				socket.user = result.result;
-				usernames.push(socket.user.username);
-				io.sockets.emit('usernames', usernames);
 				if (callback) {
 					callback(result);
 				}
@@ -88,7 +83,7 @@ module.exports = function (io, db) {
 					}
 					return;
 				}
-				socket.room = 'android';
+				socket.room = {'name' : 'android'};
 				socket.join('android');
 
 				socket.user = result.result;
@@ -114,11 +109,11 @@ module.exports = function (io, db) {
 
 		socket.on('join room', function (room) {
 			if (socket.room) {
-				console.log('leaving room :' + socket.room);
-				socket.leave(socket.room);
+				console.log('leaving room :' + socket.room.name);
+				socket.leave(socket.room.name);
 			}
-			socket.room = room;
-			socket.join(room);
+			socket.room = {'name' : room};
+			socket.join(room.name);
 		});
 
 		socket.on('disconnect', function (data) {

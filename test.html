@@ -67,21 +67,22 @@
 			$roomBox.val('');
 		});
 
-		socket.on('usernames', function (data) {
-			var html = '';
-			for (var i = 0; i < data.length; i++) {
-				html += data[i]+ '<br/>';
+		socket.on('serverTyping', function (data) {
+			var usernames = '';
+			for (var i = 0; i < data.usernames.length; i++) {
+				usernames += data.usernames[i] + ", ";
 			}
-			$users.html(html);
+			usernames += " is typing";
+			$users.val(usernames);
 		});	
 
 		$messageForm.submit(function (e) {
 			e.preventDefault();
-			socket.emit('sendMessage', {msg : $messageBox.val()});
+			socket.emit('clientMessage', {msg : $messageBox.val()});
 			$messageBox.val('');
 		});
 
-		socket.on('newMessage', function(data) {
+		socket.on('serverMessage', function(data) {
 			$chat.append("<b>" + data.username + "</b>" + " : " + data.msg + "<br/>");
 		});
 	});

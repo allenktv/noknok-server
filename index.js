@@ -9,12 +9,7 @@ var http = require('http'),
 
 mongoose.connect(constants.MONGO_IP, function (err) {
 	if (err) throw err;
-
-	// app.use(bodyParser.urlencoded({
-	// 	extended: true
-	// }));
-	// app.use(bodyParser.json());
-
+	
 	events(io, mongoose.connection);
 
 	server.listen(constants.PORT_NUMBER, function() {

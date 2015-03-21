@@ -2,7 +2,6 @@ var http = require('http'),
 	app = require('express')(),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server),
-	bodyParser = require('body-parser'),
 	mongoose = require('mongoose'),
 	events = require('./routes/events'),
 	constants = require('./common/constants/serverConstants');

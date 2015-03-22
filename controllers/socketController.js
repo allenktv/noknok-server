@@ -1,11 +1,11 @@
 var ErrorParser = require('../common/errorParser').ErrorParser,
 	jsonFactory = require('../helpers/jsonFactory').JsonFactory,
 	ServiceConstants = require('../common/constants/serviceConstants'),
-	AccountHandler = require('../routes/accountHandler');
+	AccountController = require('../controllers/accountController');;
 
-function SocketController(io, socket, db) {
+function SocketController(io, db, socket) {
 
-	var accountHandler = new AccountHandler(db);
+	var accountController = new AccountController(db);
 
 	this.sendMessage = function (message, callback) {
 		console.log(socket.user.username + ' : ' + message);
@@ -43,7 +43,7 @@ function SocketController(io, socket, db) {
 	};
 
 	this.createAccount = function (data, callback) {
-		accountHandler.handleCreateAccount(data, function onFinish(err, result) {
+		accountController.createAccount(data, function onFinish(err, result) {
 			if (err) {
 				return callback(err);
 			} 
@@ -56,7 +56,7 @@ function SocketController(io, socket, db) {
 	};
 
 	this.loginAccount = function (data, callback) {
-		accountHandler.handleLogin(data, function onFinish(err, result) {
+		accountController.login(data, function onFinish(err, result) {
 			if (err) {
 				return callback(err);
 			} 
@@ -69,7 +69,7 @@ function SocketController(io, socket, db) {
 	};
 
 	this.getAccount = function (data, callback) {
-		accountHandler.handleGetAccount(data, function onFinish(err, result) {
+		accountController.getAccount(data, function onFinish(err, result) {
 			if (err) {
 				return callback(err);
 			}
@@ -82,7 +82,7 @@ function SocketController(io, socket, db) {
 	};
 
 	this.deleteAccount = function(data, callback) {
-		accountHandler.handleDeleteAccount(data, function onFinish(err, result) {
+		accountController.deleteAccount(data, function onFinish(err, result) {
 			if (err) {
 				return callback(err);
 			} 

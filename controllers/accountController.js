@@ -4,11 +4,11 @@ var AccountDAO = require('../dao/accountDAO').AccountDAO,
 	AccountBO = require('../bo/accountBO').AccountBO,
     ErrorParser = require('../common/errorParser').ErrorParser;
 
-function AccountHandler(db) {
+function AccountController(db) {
 
 	var accounts = new AccountDAO(db);
 
-	this.handleCreateAccount = function (data, callback) {
+	this.createAccount = function (data, callback) {
 		var username = data[ServiceConstants.USERNAME];
 		var password = data[ServiceConstants.PASSWORD];
 
@@ -26,7 +26,7 @@ function AccountHandler(db) {
 		});
 	};
 
-	this.handleLogin = function (data, callback) {
+	this.login = function (data, callback) {
 		var username = data[ServiceConstants.USERNAME];
 		var password = data[ServiceConstants.PASSWORD];
 
@@ -40,7 +40,7 @@ function AccountHandler(db) {
 		});
 	};
 
-	this.handleDeleteAccount = function (data, callback) {
+	this.deleteAccount = function (data, callback) {
 		var username = data[ServiceConstants.USERNAME];
 
 		accounts.deleteAccount(username, function (err, success) {
@@ -53,7 +53,7 @@ function AccountHandler(db) {
 		});
 	}
 
-	this.handleGetAccount = function (data, callback) {
+	this.getAccount = function (data, callback) {
 		var accountId = data[ServiceConstants.ACCOUNT_ID];
 
 		accounts.getAccount(accountId, function (err, account) {
@@ -66,4 +66,4 @@ function AccountHandler(db) {
 		});
 	}
 };
-module.exports = AccountHandler;
+module.exports = AccountController;

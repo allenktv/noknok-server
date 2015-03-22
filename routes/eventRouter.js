@@ -5,7 +5,7 @@ module.exports = function (io, db) {
 
 	io.on('connection', function (socket) {
 
-		var socketController = new SocketController(io, socket, db);
+		var socketController = new SocketController(io, db, socket);
 
 		socket.on(ServiceConstants.CLIENT_MESSAGE, function (data, callback) {
 			socketController.sendMessage(data[ServiceConstants.MESSAGE], function (err, result) {

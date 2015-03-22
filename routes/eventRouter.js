@@ -1,41 +1,36 @@
 var AccountHandler = require('./accountHandler'),
-	ServiceConstants = require('../common/constants/serviceConstants');
+	ServiceConstants = require('../common/constants/serviceConstants'),
+	SocketController = require('../controllers/socketController');
 
 module.exports = function (io, db) {
 
 	var accountHandler = new AccountHandler(db);
 
 	io.on('connection', function (socket) {
-		console.log('connection detected\n');
+
+		var socketController = new SocketController(io, socket);
 
 		socket.on(ServiceConstants.CLIENT_MESSAGE, function (data, callback) {
-			console.log(socket.user.username + ' : ' + data[ServiceConstants.MESSAGE]);
-			var room = socket.room;
-			if (room) {
-				io.sockets.in(room.name).emit(ServiceConstants.SERVER_MESSAGE, 
-					{ 'msg' : data[ServiceConstants.MESSAGE], username : socket.user.username });
-			} else {
-				//error
-			}
+			socketController.sendMessage(data[ServiceConstants.MESSAGE], function (err, result) {
+				if (callback) {
+					if (err) {
+						return callback(err);
+					} 
+					return callback(result);
+				}
+			});
 		});	
 
 		socket.on(ServiceConstants.CLIENT_TYPING, function (data, callback) {
 			var isTyping = parseInt(data[ServiceConstants.IS_TYPING]);
-			var room = socket.room;
-			if (room) {
-				if (!room.hasOwnProperty('usersTyping')) {
-					room.usersTyping = [];
+			socketController.sendTypingEvent(isTyping, function (err, callback) {
+				if (callback) {
+					if (err) {
+						return callback(err);
+					} 
+					return callback(result);
 				}
-				var index = room.usersTyping.indexOf(socket.user.username);
-				if (isTyping && index == -1) {
-					room.usersTyping.push(socket.user.username);
-				} else if (!isTyping && index > -1) {
-					room.usersTyping.splice(index, 1);
-				}
-				io.sockets.in(room.name).emit(ServiceConstants.SERVER_TYPING, { 'usernames' : room.usersTyping });
-			} else {
-				//error
-			}
+			});
 		});
 
 		socket.on(ServiceConstants.CREATE_ACCOUNT, function (data, callback) {

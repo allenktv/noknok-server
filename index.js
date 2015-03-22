@@ -3,13 +3,13 @@ var http = require('http'),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server),
 	mongoose = require('mongoose'),
-	events = require('./routes/events'),
+	eventRouter = require('./routes/eventRouter'),
 	constants = require('./common/constants/serverConstants');
 
 mongoose.connect(constants.MONGO_IP, function (err) {
 	if (err) throw err;
 	
-	events(io, mongoose.connection);
+	eventRouter(io, mongoose.connection);
 
 	server.listen(constants.PORT_NUMBER, function() {
 		console.log('Express server listening on port ' + constants.PORT_NUMBER);

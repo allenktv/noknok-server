@@ -26,7 +26,7 @@ function AccountController(db) {
 		});
 	};
 
-	this.login = function (data, callback) {
+	this.loginAccount = function (data, callback) {
 		var username = data[ServiceConstants.USERNAME];
 		var password = data[ServiceConstants.PASSWORD];
 

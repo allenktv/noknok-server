@@ -1,6 +1,7 @@
 var Errors = require('./errors');
 
 module.exports.ErrorParser = function(err) {
+	console.log("parsing error: ");
 	console.dir(err);
 
 	if (err.errorCode) {

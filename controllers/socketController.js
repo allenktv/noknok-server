@@ -56,7 +56,7 @@ function SocketController(io, db, socket) {
 	};
 
 	this.loginAccount = function (data, callback) {
-		accountController.login(data, function onFinish(err, result) {
+		accountController.loginAccount(data, function onFinish(err, result) {
 			if (err) {
 				return callback(err);
 			} 

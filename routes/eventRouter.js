@@ -74,6 +74,21 @@ module.exports = function (io, db) {
 			});
 		});
 
+		//try to query someone that is near locadtion given
+		socket.on('newChat', function (data, callback) {
+
+		});
+
+		//place in cache with location
+		socket.on('waitForNearChat', function (data, callback) {
+
+		});
+
+		//Find someone farther
+		socket.on('newChatAny', function (data, callback) {
+				
+		});
+
 		socket.on('join room', function (room) {
 			socketController.joinRoom(room);
 		});

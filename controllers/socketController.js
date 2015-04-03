@@ -87,8 +87,7 @@ function SocketController(io, db, socket) {
 				return callback(err);
 			} 
 			if (result) {
-				socket.room = null;
-				socket.user = null;
+				removeSocketUserInfo();
 				return callback(null, result);
 			} else {
 				return callback(jsonFactory.error());
@@ -105,6 +104,12 @@ function SocketController(io, db, socket) {
 		socket.join(room.name);
 
 	};
+
+	function removeSocketUserInfo() {
+		socket.room = null;
+		socket.user = null;
+	};
 };
+
 
 module.exports = SocketController;
